@@ -1,9 +1,12 @@
 import React from 'react'
+import AppLayout from '../components/AppLayout'
 
-function Home(){
+function index() {
   return (
-    <div>index</div>
-  );
+    <AppLayout>
+      <div>Hellow. Next!</div>
+    </AppLayout>
+  )
 }
 
-export default Home
+export default index
