@@ -2,9 +2,12 @@ import React, { useCallback } from 'react'
 import {Form,Input,Button} from 'antd';
 import Link from 'next/link'
 import styled from 'styled-components'
-import PropTypes from 'prop-types';
+import useDispatch from 'react-redux';
 import userinput from '../hooks/userinput';
-function Loginform({setisLoggedIn}) {
+import { loginAction } from '../reducers';
+function Loginform() {
+
+  const dispatch = useDispatch();
   const [id, onChangeId]=userinput('');
   const [password, onChangePw]=userinput('');
   
@@ -12,10 +15,9 @@ function Loginform({setisLoggedIn}) {
     margin-top:10px;
   `;
 
-
   const onSubmitForm=useCallback(()=>{
     console.log(id,password);
-    setisLoggedIn(true)
+    dispatch(loginAction({id,password}));
   },[id,password]);
 
   return (
@@ -38,8 +40,5 @@ function Loginform({setisLoggedIn}) {
   )
 }
 
-Loginform.propTypes={
-  setisLoggedIn:PropTypes.func.isRequired,
-}
 
 export default Loginform
