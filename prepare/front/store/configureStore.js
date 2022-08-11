@@ -1,9 +1,14 @@
 import {createWrapper} from 'next-redux-wrapper';
-import { createStore } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension'
 import reducer from '../reducers' 
 
 const configureStore = ()=>{
-    const store=createStore(reducer) //store는 state+reducer를 합침
+    const middlewares=[];
+    const enhancer=process.env.NODE_ENV ==='production'
+    ? compose(applyMiddleware(...middlewares))
+    : composeWithDevTools(applyMiddleware(...middlewares))
+    const store=createStore(reducer,enhancer) //store는 state+reducer를 합침
     store.dispatch({
         type:'CHANGE_NICKNAME',
         data:'boogicho'

@@ -2,11 +2,10 @@ import React, { useCallback } from 'react'
 import {Form,Input,Button} from 'antd';
 import Link from 'next/link'
 import styled from 'styled-components'
-import useDispatch from 'react-redux';
+import {useDispatch} from 'react-redux';
 import userinput from '../hooks/userinput';
-import { loginAction } from '../reducers';
+import { loginAction } from '../reducers/user';
 function Loginform() {
-
   const dispatch = useDispatch();
   const [id, onChangeId]=userinput('');
   const [password, onChangePw]=userinput('');

@@ -1,51 +1,28 @@
-const initialState ={
-    user:{
-        isLoggedIn:false,
-        user:null,
-        signUpData:{},
-        loginData:{},
-    },
-    posrt:{
-        mainPosts:[],
-    },
-};
+import { HYDRATE } from "next-redux-wrapper";
+import { combineReducers } from "redux";
+import user from './user';
+import post from './post'
 
-export const loginAction=(data)=>{
-    return{
-        type:'LOG_IN',
-        data
-    }
-}
-export const logoutAction=()=>{
-    return{
-        type:'LOG_OUT',
-    }
-}
 
-             //   (이전상태,액션) => 다음상태
-const rootReducer=( state=initialState,action)=>{
-    switch (action.type){
-        case'LOG_IN':
-        return{
-            ...state,
-            user:{
-                ...state.user,
-                isLoggedIn:true,
-                user:action.data,
-            }
+
+
+const rootReducer=combineReducers({
+    //서버사이드 렌더링을위해서 index추가 원래는 user,post두개만 넣어도 된다
+    index:(state={},action)=>{
+        switch (action.type){
+            case HYDRATE:
+                console.log('')
+                return{
+                    ...state,
+                    ...action.payload
+                };
+            default:
+                return state;
         }
-        case'LOG_OUT':
-        return{
-            ...state,
-            user:{
-                ...state.user,
-                isLoggedIn:false,
-                user:null,
-            }
-        }
-
-
-    }
-};
+    },
+    // 유저초기값 포스트 초기값은 combineReducers을통해 알아서 통합
+    user,
+    post
+});
 
 export default rootReducer;

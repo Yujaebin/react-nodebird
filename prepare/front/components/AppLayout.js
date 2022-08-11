@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {} from "react";
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import {Menu,Input,Row,Col} from 'antd';
@@ -16,6 +16,8 @@ const SearchInput=styled(Input.Search)`
 //상단 레이아웃을 위한 페이지
 const AppLayout=({children})=>{
     const isLoggedIn=useSelector((state)=>state.user.isLoggedIn)
+    // const {isLoggedIn}=useSelector((state)=>state.user)
+    return(
         <div>
             <Menu mode="horizontal">
                 <Menu.Item>
@@ -40,13 +42,13 @@ const AppLayout=({children})=>{
                 <Col xs={24} md={12}>{children}</Col>
                 <Col xs={24} md={6}><a href="https://github.com/Yujaebin" target="blank" rel="noreferrer noopener">Clone by Yujaebin</a></Col>
             </Row>
-        </div>
+            </div>
     )
 };
 
 //타입스크립트 처럼 프롭타입을 정해둘수있다.
 AppLayout.propTypes={
-    children:PropTypes.node.isRequired,
+    children:PropTypes.func.isRequired,
 }
 
 export default AppLayout;

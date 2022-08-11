@@ -1,11 +1,13 @@
 import React, { useCallback } from 'react'
 import {Avatar, Card,Button} from 'antd'
-import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux';
+import { logoutAction } from '../reducers/user';
 
+function UserProfile() {
+  const dispatch=useDispatch();
 
-function UserProfile({setisLoggedIn}) {
   const onLogOut=useCallback(()=>{
-    setisLoggedIn(false)
+    dispatch(logoutAction());
   },[]);
   return (
     <Card
@@ -26,8 +28,5 @@ function UserProfile({setisLoggedIn}) {
   )
 }
 
-UserProfile.propTypes={
-  setisLoggedIn:PropTypes.node.isRequired,
-}
 
 export default UserProfile
