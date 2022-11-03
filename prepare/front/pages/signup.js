@@ -4,9 +4,14 @@ import Head from 'next/head';
 import {Form,Input,Checkbox,Button} from 'antd'
 import styled from 'styled-components';
 import userinput from '../hooks/userinput';
+import { SIGN_UP_REQUEST } from '../reducers/user';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Signup() {
-  const [id, onChangeId]=userinput('');
+  const dispatch=useDispatch();
+  const {signUpLoading}=useSelector((state)=>(state.user))
+
+  const [email, onChangeEmail]=userinput('');
   const [password, onChangePassword]=userinput('');
   const [nickname, onChangeNickname]=userinput('');
 
@@ -39,8 +44,12 @@ function Signup() {
     if (!term){
       return setTermError(true);
     }
-    console.log(password,id,term,nickname)
-  },[password,passwordCheck,term])
+    console.log(password,email,term,nickname);
+    dispatch({
+      type:SIGN_UP_REQUEST,
+      data:{email,password,nickname}
+    })
+  },[email,password,passwordCheck,term])
   return (
     <>
       <AppLayout>
@@ -51,9 +60,9 @@ function Signup() {
         </Head>
         <Form onFinish={onSubmit}>
           <div>
-            <label htmlFor='user-id'>아이디</label>
+            <label htmlFor='user-email'>이메일</label>
             <br></br>
-            <Input name="user-id" value={id} required onChange={onChangeId}/>
+            <Input name="user-email" type='email' value={email} required onChange={onChangeEmail}/>
           </div>
           <div>
             <label htmlFor='user-nick'>닉네임</label>
@@ -82,7 +91,7 @@ function Signup() {
             </div>
           </div>
           <div style={{marginTop:10}}>
-            <Button type='primary' htmlType='submit'>가입하기</Button>
+            <Button type='primary' htmlType='submit' loading={signUpLoading}>가입하기</Button>
           </div>
         </Form>
       </AppLayout>

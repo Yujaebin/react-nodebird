@@ -7,7 +7,7 @@ import post from './post'
 
 
 const rootReducer=combineReducers({
-    //서버사이드 렌더링을위해서 index추가 원래는 user,post두개만 넣어도 된다
+    //리덕스 서버사이드 렌더링을위해서 index추가 원래는 user,post두개만 넣어도 된다
     index:(state={},action)=>{
         switch (action.type){
             case HYDRATE:

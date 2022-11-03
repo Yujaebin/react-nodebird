@@ -1,21 +1,36 @@
-import { Button, Card,Avatar,Popover} from 'antd'
+import { Button, Card,Avatar,Popover,List,Comment} from 'antd'
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react'
 import {RetweetOutlined,HeartOutlined,MessageOutlined,EllipsisOutlined,HeartTwoTone} from '@ant-design/icons'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PostImages from './PostImages';
-
+import CommentForm from './CommentForm';
+import PostCardContent from './PostCardContent';
+import { REMOVE_POST_REQUEST } from '../reducers/post';
 function PostCard({post}) {
+  const dispatch=useDispatch();
   const [liked,setLiked]=useState(false);
   const [commentFormOpen,setCommentFormOpen]=useState(false);
+  
   const {me}=useSelector((state)=>state.user);
+  const id = me?.id; //me.id에 값이있으면 대입 없으면 undefined로 정의
+
+
   const onToggleLike = useCallback(()=>{
     setLiked(!liked)
   },[liked])
+
   const onToggleComment=useCallback(()=>{
     setCommentFormOpen(!commentFormOpen)
   },[commentFormOpen])
-  const id = me?.id; //me.id에 값이있으면 대입 없으면 undefined로 정의
+  
+  const onRemovePost = useCallback(()=>{
+    dispatch({
+        type:REMOVE_POST_REQUEST,
+        data: post.id,
+    })
+  })
+
   return (
     <div style={{marginBottom:10}}>
         <Card
@@ -33,7 +48,7 @@ function PostCard({post}) {
                         ?(
                             <>
                                 <Button>수정</Button>
-                                <Button type='danger'>삭제</Button>
+                                <Button onClick={onRemovePost} type='danger' >삭제</Button>
                             </>
                         ): <Button>신고</Button>}
                     </Button.Group>
@@ -45,15 +60,29 @@ function PostCard({post}) {
             <Card.Meta
                 avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
                 title={post.User.nickname}
-                description={post.content}
+                description={ <PostCardContent postData={post.content}/>}
             />
         </Card>
+        
+        {/* 여기서부턴 댓글부분 */}
         {commentFormOpen &&( 
             <div>
-                댓글부분
+                <CommentForm post={post}/>
+                <List
+                    header={`${[post.Comments.length]}개의 댓글`}
+                    itemLayout="horizontal"
+                    dataSource={post.Comments}
+                    renderItem={(item)=>(
+                        <li>
+                            <Comment
+                                author={item.User.nickname}
+                                avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                                content={item.content}
+                            />
+                        </li>
+                    )}
+                />
             </div>)}
-        {/* <CommentForm></CommentForm>
-        <Comment></Comment> */}
     </div>
   );
 }

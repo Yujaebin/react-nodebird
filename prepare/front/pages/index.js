@@ -6,12 +6,12 @@ import PostCard from '../components/PostCard'
 
 
 function index() {
-  const isLoggedIn=useSelector((state)=>state.user.isLoggedIn);
+  const me=useSelector((state)=>state.user.logInDone);
 
   const mainPosts=useSelector((state)=>state.post.mainPosts);
   return (
     <AppLayout>
-      {isLoggedIn &&<PostForm/>}
+      {me &&<PostForm/>}
       {mainPosts.map((post)=> <PostCard key={post.id} post={post}/>)}
     </AppLayout>
   )
