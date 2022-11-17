@@ -50,6 +50,9 @@ function Signup() {
       data:{email,password,nickname}
     })
   },[email,password,passwordCheck,term])
+
+
+
   return (
     <>
       <AppLayout>

@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
-import { REMOVE_POST_REQUEST } from '../reducers/post';
+import { removePost } from '../reducers/post';
+import FollowButton from './FollowButton';
 function PostCard({post}) {
   const dispatch=useDispatch();
   const [liked,setLiked]=useState(false);
@@ -25,10 +26,7 @@ function PostCard({post}) {
   },[commentFormOpen])
   
   const onRemovePost = useCallback(()=>{
-    dispatch({
-        type:REMOVE_POST_REQUEST,
-        data: post.id,
-    })
+    dispatch(removePost(post.id))
   })
 
   return (
@@ -55,7 +53,9 @@ function PostCard({post}) {
                     )}>
                 <EllipsisOutlined/>
                 </Popover>
+            
             ]}
+            extra={id && <FollowButton post={post}/>}
         >
             <Card.Meta
                 avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
